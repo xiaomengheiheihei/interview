@@ -3,7 +3,7 @@
  * @Author: carlos
  * @E-mail: xiaoshuangogo@163.com
  * @Date: 2020-12-03 11:02:17
- * @LastEditTime: 2020-12-25 14:53:52
+ * @LastEditTime: 2021-01-02 12:48:03
  */
 const PENDING = 'PENDING';
 const FULFILLED = 'FULFILLED';
@@ -60,4 +60,29 @@ class MyPromise {
     }
     
   }
+}
+
+/**
+ * @description: 手写promiseall
+ * @param {promises promise组成的数组}
+ * @return {*}
+ */
+
+Promise.prototype.all = function(promises) {
+  return new Promise((resolve, reject) => {
+    let result = [],
+        count = 0;
+    const resultByKeys = (value, index) => {
+      result[index] = value
+      if (++count === promises.length) {
+        resolve(result)
+      }
+    }
+
+    promises.forEach((promise, index) => {
+      promise.then(value => {
+        resultByKeys(value, index)
+      }, reject)
+    });
+  })
 }
